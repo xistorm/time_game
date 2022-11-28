@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { memo, useEffect, useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { loginedRoutes, logoutedRoutes } from "./routes";
+import { AuthContext } from './context'
+import { AuthService } from './services'
+
+
+import './styles/common.sass'
+
+const App = () => {
+	const navigate = useNavigate();
+
+	const [user, setUser] = useState(AuthService.getUser());
+	const [routes, setRoutes] = useState(user ? loginedRoutes : logoutedRoutes);
+
+	useEffect(() => {
+		console.log(user)
+		setRoutes(user ? loginedRoutes : logoutedRoutes);
+		navigate('/');
+	}, [user]);
+
+	return (
+		<AuthContext.Provider value={{ user, setUser }}>
+			<Routes>
+				{routes.map((route, index) => <Route key={index} {...route} />)}
+			</Routes>
+		</AuthContext.Provider>
+	);
 }
 
-export default App;
+export default memo(App);

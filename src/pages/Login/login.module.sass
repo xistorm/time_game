@@ -1,0 +1,109 @@
+@import '../../styles/variables/variables'
+    
+.wrapper
+    position: relative
+    width: 100%
+    height: 100vh
+    margin: 0 auto
+    display: flex
+
+.half
+    height: 100%
+    display: flex
+    align-items: center
+    &.left
+        width: 45%
+        justify-content: flex-end
+        z-index: 5
+    &.right
+        width: 55%
+        justify-content: center
+        background: $color-background-dark
+        z-index: 3
+    
+.content
+    width: 80%
+    padding: 2rem
+
+.image
+    width: 60%
+    height: 100%
+    background: url('../../assets/img/login_background.png')
+    background-position: center center
+    background-size: 80%
+    background-repeat: no-repeat
+
+.title
+    width: 100%
+    font-size: $size-big
+    color: $color-secondary
+    margin-bottom: 2rem
+    text-transform: uppercase
+    span
+        color: $color-secondary-dark
+
+.form
+    width: 70%
+    display: flex
+    flex-direction: column
+    flex-wrap: wrap
+    justify-content: center
+    align-items: center
+
+.description
+    font-size: $size-medium
+    font-weight: $weight-regular
+    margin-bottom: 2rem    
+
+.input, .button
+    width: 100%
+    font-size: $size-medium
+    font-weight: $weight-medium
+    margin-bottom: 1rem
+    padding: 1.25rem 2rem
+    text-align: center
+
+.input
+    color: $color-main
+    background: $color-background
+    border: 5px solid $color-main
+    &:hover, &:focus
+        border-color: $color-background
+    &.incorrect
+        border-color: $color-secondary-dark
+
+.error
+    margin-bottom: 2rem
+    align-self: flex-end
+    color: $color-secondary-dark
+
+.button
+    color: $color-background-dark
+    background: $color-main
+    border: 5px solid $color-main
+    &:hover
+        background: $color-background
+        color: $color-main
+
+@media (max-width: 1600px)
+    .half
+        &.left
+            width: 60%
+        &.right
+            width: 40%
+
+@media (max-width: 1200px)
+    .half.left
+        justify-content: center
+    .form
+        width: 100%
+
+@media (max-width: 900px)
+    .half
+        position: absolute
+        width: 100% !important
+        &.left
+            background: rgba($color-background, .8)
+        &.right
+    
+
