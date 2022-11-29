@@ -15,15 +15,15 @@ export const Login = () => {
     const navigate = useNavigate()
 
     const [value, handleChange] = useInput();
-    const [incorrectLogin, setIncorrectLogin] = useState(false);
+    const [error, setError] = useState(false);
 
     const handleLogin = () => {
-        if (value.length < 5 || value.length > 15 || !(/[a-zA-Z]+/g).test(value)) {
-            setIncorrectLogin(true);
-        } else {
+        try {
             const user = AuthService.login({ name: value });
             setUser(user);
             navigate('/');
+        } catch (e) {
+            setError(e.message);
         }
     }
 
@@ -39,12 +39,12 @@ export const Login = () => {
                                 type='text'
                                 placeholder='Ваш никнейм'
                                 name="login"
-                                className={classNames(styles.input, incorrectLogin && styles.incorrect)}
+                                className={classNames(styles.input, error && styles.incorrect)}
                                 value={value}
                                 onChange={handleChange}
                             />
-                            {incorrectLogin && <p className={classNames(styles.error)}>Неверный логин</p>}
-                            <Button reversed onClick={handleLogin} text='Зарегистрироваться' />
+                            {error && <p className={classNames(styles.error)}>{error}</p>}
+                            <Button reversed onClick={handleLogin} text='Войти' />
                         </div>
                     </div>
                 </div>
