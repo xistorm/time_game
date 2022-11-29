@@ -1,0 +1,23 @@
+@import '../../styles/variables/variables'
+    
+.button
+    width: 100%
+    font-size: $size-medium
+    font-weight: $weight-medium
+    margin-bottom: 1rem
+    padding: 1.25rem 2rem
+    text-align: center
+    &.common
+        color: $color-background
+        background: $color-main
+        border: 5px solid $color-main
+        &:hover
+            background: $color-background
+            color: $color-main
+    &.reversed
+        color: $color-main
+        background: $color-background
+        border: 5px solid $color-main
+        &:hover
+            background: $color-main
+            color: $color-background

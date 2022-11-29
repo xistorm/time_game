@@ -6,6 +6,7 @@ import { useInput } from '../../hooks';
 import { AuthContext } from "../../context";
 import { AuthService } from "../../services";
 
+import { Button } from '../../components';
 
 import styles from './login.module.sass';
 
@@ -43,7 +44,7 @@ export const Login = () => {
                                 onChange={handleChange}
                             />
                             {incorrectLogin && <p className={classNames(styles.error)}>Неверный логин</p>}
-                            <button className={styles.button} onClick={handleLogin}>Зарегистрироваться</button>
+                            <Button reversed onClick={handleLogin} text='Зарегистрироваться' />
                         </div>
                     </div>
                 </div>
