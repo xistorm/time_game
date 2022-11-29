@@ -15,7 +15,6 @@ const App = () => {
 	const [routes, setRoutes] = useState(user ? loginedRoutes : logoutedRoutes);
 
 	useEffect(() => {
-		console.log(user)
 		setRoutes(user ? loginedRoutes : logoutedRoutes);
 		navigate('/');
 	}, [user]);

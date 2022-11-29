@@ -11,7 +11,7 @@ import { Button } from '../../components';
 import styles from './login.module.sass';
 
 export const Login = () => {
-    const { user, setUser } = useContext(AuthContext);
+    const { setUser } = useContext(AuthContext);
     const navigate = useNavigate()
 
     const [value, handleChange] = useInput();
@@ -21,7 +21,7 @@ export const Login = () => {
         if (value.length < 5 || value.length > 15 || !(/[a-zA-Z]+/g).test(value)) {
             setIncorrectLogin(true);
         } else {
-            const user = AuthService.login({ login: value });
+            const user = AuthService.login({ name: value });
             setUser(user);
             navigate('/');
         }

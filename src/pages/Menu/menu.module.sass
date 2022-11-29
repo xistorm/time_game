@@ -1,0 +1,61 @@
+@import '../../styles/variables/variables'
+
+.wrapper
+    height: 100vh
+    display: flex
+    justify-content: center
+    align-items: center
+    background: $color-background
+
+.menu
+    background: $color-background
+    padding: 2rem
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+.title
+    font-size: $size-big
+    color: $color-secondary
+    border-bottom: 3px solid $color-main
+    padding: 0 2rem 1rem 2rem
+    margin-bottom: 2rem
+    span
+        color: $color-secondary-dark
+
+.links
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    border-bottom: 3px solid $color-main
+    padding-bottom: 1rem
+    margin-bottom: 2rem
+    li
+        width: 100%
+
+.link
+    display: block
+    padding: 2rem
+    &:hover
+        background: $color-main
+        color: $color-background
+        padding-left: 60%
+
+.logout
+    width: 100%
+    padding: 0 2rem
+    display: flex
+    align-items: center
+    .name, .button
+        width: 100%
+        margin-bottom: 1rem
+    .name
+        font-size: $size-regular
+
+
+@media (max-width: 700px)
+    .logout
+        flex-direction: column   
