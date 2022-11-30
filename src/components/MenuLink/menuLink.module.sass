@@ -1,0 +1,29 @@
+@import '../../styles/variables/variables'
+
+.container
+    position: relative
+
+.link
+    display: block
+    padding: 2rem
+    font-weight: $weight-regular
+    z-index: 3
+    &:hover
+        background: $color-main
+        color: $color-background
+        padding-left: 57%
+        & ~ .icon
+            color: $color-background
+
+.lock, .complete
+    position: relative
+    opacity: .6
+
+.icon
+    transition: all .2s ease
+    position: absolute
+    right: 2rem
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 5
+    font-size: $size-regular

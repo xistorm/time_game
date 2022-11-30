@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../components';
+import { useNavigate } from 'react-router-dom';
+
+import { Button, MenuLink } from '../../components';
 import { AuthContext } from '../../context';
 import { AuthService } from '../../services';
 
@@ -37,11 +38,7 @@ export const Menu = () => {
                     <p>Рейтинг: {user.rating}</p>
                 </div>
                 <ul className={styles.links}>
-                    {menuLinks.map(({ to, text }, index) => (
-                        <li key={index}>
-                            <Link to={to} className={styles.link}>{text}</Link>
-                        </li>
-                    ))}
+                    {menuLinks.map((link, index) => <MenuLink {...link} key={index} />)}
                 </ul>
                 <Button className={styles.button} text='Выйти' onClick={handleLogout} />
             </div>
