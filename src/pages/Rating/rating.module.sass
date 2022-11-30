@@ -1,0 +1,54 @@
+@import '../../styles/variables/variables'
+
+.wrapper, .rating
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+.wrapper
+    height: 100vh
+
+.rating
+    width: 60%
+
+.title
+    text-align: center
+
+.table
+    width: 100%
+    margin-top: 1rem
+
+.row
+    padding: 1rem
+    border-bottom: 3px solid $color-background-dark
+    font-size: $size-medium     
+    font-weight: $weight-regular
+    &:last-of-type
+        border-bottom: none
+    &.template
+        font-weight: $weight-medium
+        margin-bottom: 1rem
+        border-bottom: 3px solid $color-main
+    &.current
+        background: $color-background-dark
+        border-bottom: none
+
+.item
+    display: flex
+    justify-content: space-between
+
+.field
+    width: calc(100% / 3)
+    &.middle
+        text-align: center
+    &.right
+        text-align: right
+
+.button
+    margin-top: 1rem
+
+
+@media (max-width: 1200px)
+    .rating
+        width: 80%

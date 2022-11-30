@@ -16,23 +16,23 @@ export class AuthService {
 
     static #updateUserList(user) {
         const { name, ...data } = user;
-        const users = this.#getUserList();
+        const users = this.getUserList();
         users[name] = data;
 
         const parsedUsers = JSON.stringify(users);
         localStorage.setItem('users', parsedUsers);
     }
 
-    static #getUserList() {
+    static #getUserByName(name) {
+        const users = this.getUserList();
+        return { name, ...users[name] };
+    }
+
+    static getUserList() {
         const users = localStorage.getItem('users');
         const parsedUsers = JSON.parse(users) || {};
 
         return parsedUsers;
-    }
-
-    static #getUserByName(name) {
-        const users = this.#getUserList();
-        return { name, ...users[name] };
     }
 
     static getUser() {
@@ -43,7 +43,7 @@ export class AuthService {
     }
 
     static userExist(name) {
-        const users = this.#getUserList();
+        const users = this.getUserList();
 
         return name in users;
     }
