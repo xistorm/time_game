@@ -11,7 +11,7 @@ import { Button } from '../../components';
 import styles from './login.module.sass';
 
 export const Login = () => {
-    const { setUser } = useContext(AuthContext);
+    const { updateUser } = useContext(AuthContext);
     const navigate = useNavigate()
 
     const [value, handleChange] = useInput();
@@ -20,7 +20,7 @@ export const Login = () => {
     const handleLogin = () => {
         try {
             const user = AuthService.login({ name: value });
-            setUser(user);
+            updateUser(user);
             navigate('/');
         } catch (e) {
             setError(e.message);

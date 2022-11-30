@@ -14,13 +14,15 @@ const App = () => {
 	const [user, setUser] = useState(AuthService.getUser());
 	const [routes, setRoutes] = useState(user ? loginedRoutes : logoutedRoutes);
 
+	const updateUser = (user) => user ? setUser({ ...user }) : setUser(user)
+
 	useEffect(() => {
 		setRoutes(user ? loginedRoutes : logoutedRoutes);
 		navigate('/');
 	}, [user]);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser }}>
+		<AuthContext.Provider value={{ user, updateUser }}>
 			<Routes>
 				{routes.map((route, index) => <Route key={index} {...route} />)}
 			</Routes>

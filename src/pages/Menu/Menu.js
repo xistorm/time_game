@@ -19,12 +19,12 @@ const menuLinks = [
 ];
 
 export const Menu = () => {
-    const { user, setUser } = useContext(AuthContext);
+    const { user, updateUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
         const user = AuthService.logout();
-        setUser(user);
+        updateUser(user);
         navigate('/')
     }
 
@@ -32,6 +32,10 @@ export const Menu = () => {
         <div className={styles.wrapper}>
             <div className={styles.menu}>
                 <h2 className={styles.title}>Игра со <span>временем</span></h2>
+                <div className={styles.subtitle}>
+                    <p>Пользователь: {user.name}</p>
+                    <p>Рейтинг: {user.rating}</p>
+                </div>
                 <ul className={styles.links}>
                     {menuLinks.map(({ to, text }, index) => (
                         <li key={index}>
@@ -39,10 +43,7 @@ export const Menu = () => {
                         </li>
                     ))}
                 </ul>
-                <div className={styles.logout}>
-                    <p className={styles.name}>Пользователь: {user.name}</p>
-                    <Button className={styles.button} text='Выйти' onClick={handleLogout} />
-                </div>
+                <Button className={styles.button} text='Выйти' onClick={handleLogout} />
             </div>
         </div>
     );

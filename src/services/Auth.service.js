@@ -2,6 +2,18 @@
 
 export class AuthService {
 
+    static emptyUser = {
+        name: '',
+        rating: 0,
+        level: 0,
+    }
+
+    static #saveUser(user) {
+        const parsedUser = JSON.stringify(user);
+        localStorage.setItem('user', parsedUser);
+        this.#updateUserList(user);
+    }
+
     static #updateUserList(user) {
         const { name, ...data } = user;
         const users = this.#getUserList();
@@ -20,7 +32,7 @@ export class AuthService {
 
     static #getUserByName(name) {
         const users = this.#getUserList();
-        return users[name];
+        return { name, ...users[name] };
     }
 
     static getUser() {
@@ -36,16 +48,22 @@ export class AuthService {
         return name in users;
     }
 
+    static update(user) {
+        this.#saveUser(user);
+        return user;
+    }
+
     static login(user) {
         if (user.name.length < 5 || user.name.length > 15 || !(/[a-zA-Z]+/g).test(user.name)) {
             throw new Error('Не соответствует формату');
         }
 
-        const parsedUser = this.userExist(user.name) ? JSON.stringify(user) : this.#getUserByName(user.name);
-        this.#updateUserList(user);
-        localStorage.setItem('user', parsedUser);
+        const userFullInfo = this.userExist(user.name) ?
+            this.#getUserByName(user.name) :
+            { ...this.emptyUser, ...user };
+        this.#saveUser(userFullInfo);
 
-        return user;
+        return userFullInfo;
     }
 
     static logout() {

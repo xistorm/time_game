@@ -15,14 +15,26 @@
     justify-content: center
     align-items: center
 
+.title, .subtitle, .logout
+    padding: 0 2rem 1rem 2rem
+
 .title
     font-size: $size-big
     color: $color-secondary
-    border-bottom: 3px solid $color-main
-    padding: 0 2rem 1rem 2rem
     margin-bottom: 2rem
     span
         color: $color-secondary-dark
+
+.subtitle
+    width: 100%
+    display: flex
+    justify-content: space-between
+    gap: 1rem
+    border-bottom: 3px solid $color-main
+    p
+        font-weight: $weight-regular
+        font-size: $size-regular
+
 
 .links
     width: 100%
@@ -31,7 +43,7 @@
     justify-content: center
     align-items: center
     border-bottom: 3px solid $color-main
-    padding-bottom: 1rem
+    padding: 1rem 0
     margin-bottom: 2rem
     li
         width: 100%
@@ -39,6 +51,7 @@
 .link
     display: block
     padding: 2rem
+    font-weight: $weight-regular
     &:hover
         background: $color-main
         color: $color-background
@@ -49,13 +62,10 @@
     padding: 0 2rem
     display: flex
     align-items: center
-    .name, .button
+    .button
         width: 100%
-        margin-bottom: 1rem
-    .name
-        font-size: $size-regular
 
 
 @media (max-width: 700px)
-    .logout
+    .subtitle, .logout
         flex-direction: column   
