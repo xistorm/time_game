@@ -6,8 +6,11 @@ export const useCanvas = () => {
     const [canvasCtx, setCanvasCtx] = useState();
 
     useEffect(() => {
+        const { current } = canvasRef;
+        if (!current) return;
+
         setCanvasCtx(canvasRef.current.getContext('2d'));
-    }, []);
+    }, [canvasRef]);
 
     return { canvasRef, canvasCtx };
 }

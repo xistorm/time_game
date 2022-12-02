@@ -4,9 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { Button, MenuLink } from '../../../components';
 import { AuthContext } from '../../../context';
 import { GameService } from '../../../services';
+import { MovingLevel } from '../MovingLevel/MovingLevel';
+import { AppearingLevel } from '../AppearingLevel/AppearingLevel';
 
 
 import styles from './levelMenu.module.sass';
+
+export const indexToLevelMap = {
+    'moving': <MovingLevel />,
+    'appearing': <AppearingLevel />,
+}
 
 export const LevelMenu = () => {
     const { user } = useContext(AuthContext);

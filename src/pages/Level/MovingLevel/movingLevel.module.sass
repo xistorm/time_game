@@ -1,0 +1,43 @@
+@import '../../../styles/variables/variables'
+
+.wrapper
+    width: 100%
+    height: 100vh
+    position: relative
+
+.object
+    position: absolute
+    z-index: 5
+    
+.timer, .drawing
+    position: absolute
+
+.drawing
+    z-index: 5
+
+.timer
+    z-index: 6
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+
+.can
+    &__foreground
+        background: url('../../../assets/img/can_foreground.png')
+        height: 190px
+        z-index: 20
+        bottom: 2rem
+        right: 2rem
+    &__background
+        background: url('../../../assets/img/can_background.png')
+        height: 63px
+        background-position: bottom center
+        z-index: 1
+        bottom: calc(2rem + 190px)
+        right: 2rem
+    &__foreground, &__background
+        width: 250px
+        position: absolute
+        background-size: contain
+        background-repeat: no-repeat

@@ -37,8 +37,12 @@ export class GameService {
         return complitedLevels.length;
     }
 
-    static compliteLevel = (user, levelName) => {
-        user.levels[levelName].status = this.ELevelStatus.COMPLETE;
+    static compliteLevel = (user, levelName, rating) => {
+        user.levels[levelName] = {
+            ...this.emptyLevels,
+            status: this.ELevelStatus.COMPLETE,
+            rating,
+        };
         return user;
     }
 
