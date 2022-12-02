@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, createRef, useState } from "react"
 
 
 export const EDragNDropStatus = {
@@ -6,9 +6,10 @@ export const EDragNDropStatus = {
     ACTIVE: 'active',
 }
 
-export const useDragNDrop = (startCoordinates) => {
-    const ref = useRef();
-    const [coordinates, setCoordinates] = useState(startCoordinates);
+export const useDragNDrop = (onDrop,) => {
+    const ref = createRef();
+
+    const [coordinates, setCoordinates] = useState({});
     const [state, setState] = useState(EDragNDropStatus.INACTIVE);
 
     useEffect(() => {
@@ -22,7 +23,9 @@ export const useDragNDrop = (startCoordinates) => {
     }, [ref]);
 
     useEffect(() => {
-        if (!ref.current) return;
+        const { current } = ref;
+        if (!current) return;
+
         ref.current.style.left = `${coordinates.x}px`;
         ref.current.style.top = `${coordinates.y}px`;
     }, [coordinates.x, coordinates.y]);
@@ -44,16 +47,17 @@ export const useDragNDrop = (startCoordinates) => {
 
         setState(EDragNDropStatus.ACTIVE);
         document.addEventListener('mousemove', handler);
-        current.addEventListener('mouseup', () => handleDrop(handler));
+        document.addEventListener('mouseup', () => handleDrop(handler));
     };
 
     const handleDrop = (handler) => {
+        onDrop && onDrop();
         setState(EDragNDropStatus.INACTIVE);
         document.removeEventListener('mousemove', handler);
     };
 
     return {
-        ref,
+        dragNDropRef: ref,
         state,
     }
 }

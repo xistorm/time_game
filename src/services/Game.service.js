@@ -11,11 +11,13 @@ export class GameService {
     static emptyLevels = {
         moving: {
             status: this.ELevelStatus.OPEN,
-            title: 'Движение'
+            title: 'Движение',
+            rating: 0,
         },
         appearing: {
             status: this.ELevelStatus.LOCK,
-            title: 'Появление'
+            title: 'Появление',
+            rating: 0,
         },
     }
 
@@ -26,6 +28,13 @@ export class GameService {
         return fullLevelsInfo;
     }
 
+    static getRating = (user) => {
+        const { levels } = user;
+        return Object.keys(user.levels).reduce((prev, key) => {
+            return prev += levels[key].rating;
+        }, 0);
+    }
+
     static getLevels = (user) => {
         const fullLevelsInfo = this.initLevels(user);
         return fullLevelsInfo;
@@ -33,13 +42,24 @@ export class GameService {
 
     static complitedLevelsAmount = (user) => {
         const { levels } = user;
-        const complitedLevels = Object.keys(levels).filter(key => levels[key].status === this.ELevelStatus.COMPLITE);
+        const complitedLevels = Object.keys(levels).filter(key => levels[key].status === this.ELevelStatus.COMPLETE);
         return complitedLevels.length;
     }
 
-    static compliteLevel = (user, levelName) => {
-        user.levels[levelName].status = this.ELevelStatus.COMPLETE;
+    static compliteLevel = (user, levelName, rating) => {
+        user.levels[levelName] = {
+            ...this.emptyLevels[levelName],
+            status: this.ELevelStatus.COMPLETE,
+            rating,
+        };
         return user;
+    }
+
+    static unlockLevel = (user, levelName) => {
+        user.levels[levelName] = {
+            ...this.emptyLevels[levelName],
+            status: this.ELevelStatus.OPEN,
+        }
     }
 
 }

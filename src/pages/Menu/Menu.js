@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, MenuLink } from '../../components';
 import { AuthContext } from '../../context';
-import { AuthService } from '../../services';
+import { AuthService, GameService } from '../../services';
 
 
 import styles from './menu.module.sass';
@@ -21,12 +21,14 @@ const menuLinks = [
 
 export const Menu = () => {
     const { user, updateUser } = useContext(AuthContext);
+    const rating = GameService.getRating(user);
     const navigate = useNavigate();
 
     const handleLogout = () => {
         const user = AuthService.logout();
         updateUser(user);
-        navigate('/')
+        navigate('/');
+        window.location.reload();
     }
 
     return (
@@ -35,7 +37,7 @@ export const Menu = () => {
                 <h2 className={styles.title}>Игра со <span>временем</span></h2>
                 <div className={styles.subtitle}>
                     <p>Пользователь: {user.name}</p>
-                    <p>Рейтинг: {user.rating}</p>
+                    <p>Рейтинг: {rating}</p>
                 </div>
                 <ul className={styles.links}>
                     {menuLinks.map((link, index) => <MenuLink {...link} key={index} />)}
