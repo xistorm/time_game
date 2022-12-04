@@ -4,12 +4,21 @@ import { useEffect, useState } from 'react';
 
 import styles from './timer.module.sass';
 
-export const Timer = ({ startTime, id, delay, onEnding, className }) => {
+export const Timer = ({
+    startTime,
+    id,
+    delay,
+    onEnding,
+    onTick,
+    className,
+    ...props
+}) => {
     const [time, setTime] = useState(startTime);
     const [timeInterval, setTimeInterval] = useState();
 
     useEffect(() => {
         const interval = setInterval(() => {
+            onTick && onTick();
             setTime(val => val - 1);
         }, delay);
         setTimeInterval(interval);
@@ -31,6 +40,6 @@ export const Timer = ({ startTime, id, delay, onEnding, className }) => {
     }, [time]);
 
     return (
-        <p className={classNames(className, styles.time)}>{time}</p>
+        <p className={classNames(className, styles.time)} {...props}>{time}</p>
     );
 }

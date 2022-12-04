@@ -1,0 +1,35 @@
+{
+    "moving": {
+        "levelName": "moving",
+        "unlockingLevelName": "appearing",
+        "objectsAmount": 5,
+        "figureSize": {
+            "min": 100,
+            "max": 200
+        },
+        "vertexesAmount": {
+            "min": 3,
+            "max": 6
+        },
+        "timerTime": {
+            "min": 3,
+            "max": 8
+        }
+    },
+    "appearing": {
+        "levelName": "appearing",
+        "objectsAmount": 5,
+        "figureSize": {
+            "min": 100,
+            "max": 200
+        },
+        "vertexesAmount": {
+            "min": 3,
+            "max": 6
+        },
+        "timerTime": {
+            "min": 3,
+            "max": 8
+        }
+    }
+}

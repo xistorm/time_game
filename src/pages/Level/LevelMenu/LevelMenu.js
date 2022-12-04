@@ -17,7 +17,7 @@ export const indexToLevelMap = {
 
 export const LevelMenu = () => {
     const { user } = useContext(AuthContext);
-    const levels = GameService.getLevels(user);
+    const { levels } = user;
 
     const navigate = useNavigate();
 

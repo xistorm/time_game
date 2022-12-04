@@ -1,48 +1,29 @@
-import { useRef, useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 
-import { AuthContext } from '../../../context';
 import { Drawing, LevelHeader, Timer } from '../../../components';
-import { useDragNDrop } from '../../../hooks';
+import { useDragNDrop, useLevel } from '../../../hooks';
 import { EDragNDropStatus } from '../../../hooks/useDragNDrop';
-import { generateTimerData, generateDrawingData, OBJECTS_AMOUNT } from '../Level.tools';
-import { AuthService, GameService } from '../../../services';
 
 
 import styles from './movingLevel.module.sass';
 
-export const MovingLevel = () => {
-    const { user, updateUser } = useContext(AuthContext);
-
+export const MovingLevel = (levelData) => {
     const canRef = useRef();
-    const navigate = useNavigate();
     const { dragNDropRef, state } = useDragNDrop();
-
-    const [rating, setRating] = useState(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [timerData, setTimerData] = useState();
-    const [drawingData, setDrawingData] = useState();
-
-    useEffect(() => {
-        updateData();
-    }, []);
+    const {
+        rating,
+        remaining,
+        timerData,
+        drawingData,
+        updateData,
+        updateRatio,
+    } = useLevel(levelData);
 
     useEffect(() => {
         if (state === EDragNDropStatus.INACTIVE && figureInCan()) {
-            setRating((prev) => prev += 200);
-            updateData();
+            updateData(true);
         }
     }, [state]);
-
-    useEffect(() => {
-        if (currentIndex === OBJECTS_AMOUNT) {
-            GameService.unlockLevel(user, 'appearing');
-            const userWithRating = GameService.compliteLevel(user, 'moving', rating);
-            const updatedUser = AuthService.update(userWithRating);
-            updateUser(updatedUser);
-            navigate('/rating');
-        }
-    }, [currentIndex]);
 
     const figureInCan = () => {
         const canPos = canRef.current?.getBoundingClientRect();
@@ -57,24 +38,11 @@ export const MovingLevel = () => {
         );
     }
 
-    const updateData = () => {
-        const newTimerData = generateTimerData();
-        const newDrawingData = generateDrawingData();
-
-        setTimerData({ ...newTimerData });
-        setDrawingData({ ...newDrawingData });
-        setCurrentIndex((val) => val += 1);
-    }
-
-    const handleTimerEnd = (index = 0) => {
-        updateData()
-    }
-
     if (!timerData || !drawingData) return;
 
     return (
         <div className={styles.wrapper}>
-            <LevelHeader rating={rating} remaining={OBJECTS_AMOUNT - currentIndex} />
+            <LevelHeader rating={rating} remaining={remaining} />
             <div
                 className={styles.object}
                 ref={dragNDropRef}
@@ -86,13 +54,14 @@ export const MovingLevel = () => {
                 }}
             >
                 <Timer
-                    id={`timer_${currentIndex}`}
+                    id={`timer_${remaining}`}
                     className={styles.timer}
                     {...timerData}
-                    onEnding={handleTimerEnd}
+                    onEnding={updateData}
+                    onTick={updateRatio}
                 />
                 <Drawing
-                    id={`drawing_${currentIndex}`}
+                    id={`drawing_${remaining}`}
                     className={styles.drawing}
                     size={drawingData.size}
                     vertexesAmount={drawingData.vertexesAmount}

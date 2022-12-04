@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-import { AppearingLevel, LevelMenu, Login, MovingLevel, Menu, Rating } from './pages';
+import { LevelMenu, Login, Level, Menu, Rating } from './pages';
 
 
 const noMatchingRoute = {
@@ -24,11 +24,11 @@ export const loginedRoutes = [
     },
     {
         path: '/level/moving',
-        element: <MovingLevel />,
+        element: <Level name='moving' />,
     },
     {
         path: '/level/appearing',
-        element: <AppearingLevel />,
+        element: <Level name='appearing' />,
     },
     {
         path: '/rating',

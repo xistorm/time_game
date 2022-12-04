@@ -1,0 +1,15 @@
+{
+    "name": "",
+    "levels": {
+        "moving": {
+            "status": "open",
+            "title": "Движение",
+            "rating": 0
+        },
+        "appearing": {
+            "status": "lock",
+            "title": "Появление",
+            "rating": 0
+        }
+    }
+}

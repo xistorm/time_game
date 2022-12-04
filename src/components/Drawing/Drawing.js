@@ -6,7 +6,7 @@ import { DrawerService } from '../../services';
 
 import styles from './drawing.module.sass';
 
-export const Drawing = ({ size, id, vertexesAmount }) => {
+export const Drawing = ({ size, id, vertexesAmount, ...props }) => {
     const { canvasRef, canvasCtx } = useCanvas();
 
     useEffect(() => {
@@ -24,6 +24,7 @@ export const Drawing = ({ size, id, vertexesAmount }) => {
             ref={canvasRef}
             width={`${size}px`}
             height={`${size}px`}
+            {...props}
         ></canvas>
     );
 }

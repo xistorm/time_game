@@ -1,12 +1,7 @@
+import emptyUser from '../data/user.json';
 
 
 export class AuthService {
-
-    static emptyUser = {
-        name: '',
-        rating: 0,
-        levels: {},
-    }
 
     static #saveUser(user) {
         const parsedUser = JSON.stringify(user);
@@ -60,7 +55,7 @@ export class AuthService {
 
         const userFullInfo = this.userExist(user.name) ?
             this.#getUserByName(user.name) :
-            { ...this.emptyUser, ...user };
+            { ...emptyUser, ...user };
         this.#saveUser(userFullInfo);
 
         return userFullInfo;
