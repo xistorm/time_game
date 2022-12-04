@@ -5,7 +5,7 @@ export class AuthService {
     static emptyUser = {
         name: '',
         rating: 0,
-        level: 0,
+        levels: {},
     }
 
     static #saveUser(user) {

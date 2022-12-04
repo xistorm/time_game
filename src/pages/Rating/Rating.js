@@ -32,7 +32,7 @@ export const Rating = () => {
                         level='Пройденных уровней'
                         rating='Рейтинг'
                     />
-                    {users.map(item => <TableRow className={classNames(item.name === user.name && styles.current)} {...item} />)}
+                    {users.map(item => <TableRow key={item.name} className={classNames(item.name === user.name && styles.current)} user={item} />)}
                 </ul>
                 <Button text='Назад' className={styles.button} onClick={handleBack} />
             </div>

@@ -1,26 +1,21 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../../../context';
 import { Drawing, LevelHeader, Timer } from '../../../components';
 import { useDragNDrop } from '../../../hooks';
 import { EDragNDropStatus } from '../../../hooks/useDragNDrop';
-import { generateTimerData, generateDrawingData } from '../Level.tools';
+import { generateTimerData, generateDrawingData, OBJECTS_AMOUNT } from '../Level.tools';
+import { AuthService, GameService } from '../../../services';
 
 
 import styles from './movingLevel.module.sass';
 
-const OBJECTS_AMOUNT = 5;
-
-const MIN_FIGURE_SIZE = 100;
-const MAX_FIGURE_SIZE = 200;
-
-const MIN_VERTEXES = 3;
-const MAX_VERTEXES = 6;
-
-const MIN_TIMER_START_TIME = 3;
-const MAX_TIMER_START_TIME = 5;
-
 export const MovingLevel = () => {
+    const { user, updateUser } = useContext(AuthContext);
+
     const canRef = useRef();
+    const navigate = useNavigate();
     const { dragNDropRef, state } = useDragNDrop();
 
     const [rating, setRating] = useState(0);
@@ -33,12 +28,21 @@ export const MovingLevel = () => {
     }, []);
 
     useEffect(() => {
-        console.log(figureInCan());
         if (state === EDragNDropStatus.INACTIVE && figureInCan()) {
             setRating((prev) => prev += 200);
             updateData();
         }
     }, [state]);
+
+    useEffect(() => {
+        if (currentIndex === OBJECTS_AMOUNT) {
+            GameService.unlockLevel(user, 'appearing');
+            const userWithRating = GameService.compliteLevel(user, 'moving', rating);
+            const updatedUser = AuthService.update(userWithRating);
+            updateUser(updatedUser);
+            navigate('/rating');
+        }
+    }, [currentIndex]);
 
     const figureInCan = () => {
         const canPos = canRef.current?.getBoundingClientRect();
@@ -54,8 +58,8 @@ export const MovingLevel = () => {
     }
 
     const updateData = () => {
-        const newTimerData = generateTimerData(MIN_TIMER_START_TIME, MAX_TIMER_START_TIME);
-        const newDrawingData = generateDrawingData(MIN_FIGURE_SIZE, MAX_FIGURE_SIZE, MIN_VERTEXES, MAX_VERTEXES);
+        const newTimerData = generateTimerData();
+        const newDrawingData = generateDrawingData();
 
         setTimerData({ ...newTimerData });
         setDrawingData({ ...newDrawingData });
@@ -70,7 +74,7 @@ export const MovingLevel = () => {
 
     return (
         <div className={styles.wrapper}>
-            <LevelHeader rating={rating} remaining={currentIndex} />
+            <LevelHeader rating={rating} remaining={OBJECTS_AMOUNT - currentIndex} />
             <div
                 className={styles.object}
                 ref={dragNDropRef}

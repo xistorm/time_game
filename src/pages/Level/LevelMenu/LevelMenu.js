@@ -32,7 +32,7 @@ export const LevelMenu = () => {
                 <ul className={styles.links}>
                     {Object.keys(levels).map((key, index) => {
                         const { status, title } = levels[key];
-                        const isActive = status === GameService.ELevelStatus.OPEN;
+                        const isActive = status !== GameService.ELevelStatus.LOCK;
                         const className = !isActive ? styles[status] : '';
                         const to = isActive ? `/level/${key}` : ''
 

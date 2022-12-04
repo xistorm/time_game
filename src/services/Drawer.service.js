@@ -1,6 +1,19 @@
+import { randomRange } from "../utils";
 
 
 export class DrawerService {
+
+    static colorsPool = [
+        '#edc7b7',
+        '#123c69',
+        '#DA789A',
+        '#ac3b61',
+    ]
+
+    static #getRandomColor() {
+        const index = randomRange(0, this.colorsPool.length);
+        return this.colorsPool[index];
+    }
 
     static #calculateVertexes(n, len) {
         const vertexes = [];
@@ -17,7 +30,7 @@ export class DrawerService {
         return vertexes;
     }
 
-    static fillNAngleFigure(ctx, n, len) {
+    static fillNAngleFigure(ctx, n, len, color = this.#getRandomColor()) {
         if (n < 3) return;
         const vertexes = this.#calculateVertexes(n, len);
         const [x0, y0] = vertexes[0];
@@ -29,8 +42,7 @@ export class DrawerService {
             ctx.lineTo(toX, toY);
         }
         ctx.lineWidth = 5;
-        ctx.fillStyle = "#000";
-        ctx.stroke();
+        ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
     }
