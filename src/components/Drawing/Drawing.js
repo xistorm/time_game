@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useCanvas, } from '../../hooks';
+import { useCanvas } from '../../hooks';
 import { DrawerService } from '../../services';
 
 

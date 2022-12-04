@@ -1,6 +1,6 @@
-
-
 import classNames from 'classnames';
+
+
 import styles from './button.module.sass';
 
 export const Button = ({ reversed = false, className, text, ...props }) => {

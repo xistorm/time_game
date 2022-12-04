@@ -1,9 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import { randomRange } from '../utils';
+import { cancelAction, randomRange, updateWindow } from '../utils';
 import { GameService, AuthService } from '../services';
 import { AuthContext } from "../context";
+import { useModal } from "./useModal";
 
 
 const START_RATIO = 0.1;
@@ -36,9 +37,15 @@ export const useLevel = ({
     figureSize,
     vertexesAmount,
     timerTime,
+    started
 }) => {
-    const { user, updateUser } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const handleResults = () => {
+        navigate('/level');
+    }
+
+    const handleRetry = () => {
+        updateWindow();
+    }
 
     const [ratio, setRatio] = useState(START_RATIO);
     const [rating, setRating] = useState(0);
@@ -46,9 +53,23 @@ export const useLevel = ({
     const [timerData, setTimerData] = useState();
     const [drawingData, setDrawingData] = useState();
 
+    const { user, updateUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const { Modal, openModal } = useModal({
+        title: 'Результаты',
+        description: `Вы набрали ${rating} очков! Так держать!`,
+        closeText: 'Меню',
+        onClose: handleResults,
+        additionalAction: {
+            text: 'Еще раз',
+            onClick: handleRetry,
+        }
+    });
+
     useEffect(() => {
+        if (!started) return;
         updateData();
-    }, []);
+    }, [started]);
 
     useEffect(() => {
         if (currentIndex === objectsAmount) {
@@ -58,11 +79,12 @@ export const useLevel = ({
             const userWithRating = GameService.compliteLevel(userWithUnlockedLevel, levelName, rating);
             const updatedUser = AuthService.update(userWithRating);
             updateUser(updatedUser);
-            navigate('/rating');
+            openModal();
         }
     }, [currentIndex]);
 
     const updateData = (addRating = false) => {
+        if (currentIndex === objectsAmount) return;
         const newTimerData = generateTimerData(timerTime);
         const newDrawingData = generateDrawingData(figureSize, vertexesAmount);
 
@@ -79,11 +101,13 @@ export const useLevel = ({
     }
 
     return {
+        ratio,
         rating,
         remaining: objectsAmount - currentIndex,
         timerData,
         drawingData,
         updateData,
         updateRatio,
+        Modal,
     }
 }

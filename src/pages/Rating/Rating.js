@@ -18,7 +18,9 @@ export const Rating = () => {
     const userList = AuthService.getUserList();
     const users = objectToArray(userList, 'name');
 
-    const handleBack = () => navigate('/');
+    const handleBack = () => {
+        navigate('/');
+    }
 
     return (
         <div className={styles.wrapper}>

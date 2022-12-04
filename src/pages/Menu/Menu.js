@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, MenuLink } from '../../components';
 import { AuthContext } from '../../context';
 import { AuthService, GameService } from '../../services';
+import { updateWindow } from '../../utils';
 
 
 import styles from './menu.module.sass';
@@ -28,7 +29,7 @@ export const Menu = () => {
         const user = AuthService.logout();
         updateUser(user);
         navigate('/');
-        window.location.reload();
+        updateWindow();
     }
 
     return (

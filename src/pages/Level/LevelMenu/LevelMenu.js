@@ -10,11 +10,6 @@ import { AppearingLevel } from '../AppearingLevel/AppearingLevel';
 
 import styles from './levelMenu.module.sass';
 
-export const indexToLevelMap = {
-    'moving': <MovingLevel />,
-    'appearing': <AppearingLevel />,
-}
-
 export const LevelMenu = () => {
     const { user } = useContext(AuthContext);
     const { levels } = user;
@@ -31,7 +26,8 @@ export const LevelMenu = () => {
                 <h2 className={styles.title}>Уровни <span>игры</span></h2>
                 <ul className={styles.links}>
                     {Object.keys(levels).map((key, index) => {
-                        const { status, title } = levels[key];
+                        const { status } = levels[key];
+                        const title = GameService.getLevelTitle(key);
                         const isActive = status !== GameService.ELevelStatus.LOCK;
                         const className = !isActive ? styles[status] : '';
                         const to = isActive ? `/level/${key}` : ''

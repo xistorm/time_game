@@ -14,18 +14,17 @@ export const AppearingLevel = (levelData) => {
         drawingData,
         updateData,
         updateRatio,
+        Modal
     } = useLevel(levelData);
 
     const handleClick = () => {
         updateData(true);
     }
 
-    if (!timerData || !drawingData) return;
-
     return (
         <div className={styles.wrapper}>
             <LevelHeader rating={rating} remaining={remaining} />
-            <div
+            {timerData && drawingData && <div
                 className={styles.object}
                 onClick={handleClick}
                 style={{
@@ -49,7 +48,8 @@ export const AppearingLevel = (levelData) => {
                     size={drawingData.size}
                     vertexesAmount={drawingData.vertexesAmount}
                 />
-            </div>
+            </div>}
+            {Modal}
         </div >
     )
 }

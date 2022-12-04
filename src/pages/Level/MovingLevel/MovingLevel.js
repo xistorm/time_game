@@ -17,6 +17,7 @@ export const MovingLevel = (levelData) => {
         drawingData,
         updateData,
         updateRatio,
+        Modal,
     } = useLevel(levelData);
 
     useEffect(() => {
@@ -38,12 +39,10 @@ export const MovingLevel = (levelData) => {
         );
     }
 
-    if (!timerData || !drawingData) return;
-
     return (
         <div className={styles.wrapper}>
             <LevelHeader rating={rating} remaining={remaining} />
-            <div
+            {timerData && drawingData && <div
                 className={styles.object}
                 ref={dragNDropRef}
                 style={{
@@ -66,9 +65,10 @@ export const MovingLevel = (levelData) => {
                     size={drawingData.size}
                     vertexesAmount={drawingData.vertexesAmount}
                 />
-            </div>
+            </div>}
             <div className={styles.can__background}></div>
             <div className={styles.can__foreground} ref={canRef}></div>
+            {Modal}
         </div >
     )
 }

@@ -15,6 +15,12 @@ export class GameService {
         return levelData;
     }
 
+    static getLevelTitle = (levelName) => {
+        const levelTitle = levelsData[levelName].title
+
+        return levelTitle;
+    }
+
     static getRating = (user) => {
         const { levels } = user;
         return Object.keys(user.levels).reduce((prev, key) => {
