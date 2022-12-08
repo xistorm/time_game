@@ -3,11 +3,13 @@ import { useModal } from "../../hooks";
 import { GameService } from "../../services";
 import { AppearingLevel } from "./AppearingLevel/AppearingLevel";
 import { MovingLevel } from "./MovingLevel/MovingLevel";
+import { PathLevel } from "./PathLevel/PathLevel";
 
 
 const levelNameToLevelMap = {
     moving: MovingLevel,
     appearing: AppearingLevel,
+    path: PathLevel,
 }
 
 export const Level = ({ name }) => {

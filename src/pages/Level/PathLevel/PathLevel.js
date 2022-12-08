@@ -5,9 +5,9 @@ import { useDragNDrop, useLevel } from '../../../hooks';
 import { EDragNDropStatus } from '../../../hooks/useDragNDrop';
 
 
-import styles from './movingLevel.module.sass';
+import styles from './pathLevel.module.sass';
 
-export const MovingLevel = (levelData) => {
+export const PathLevel = (levelData) => {
     const canRef = useRef();
     const { dragNDropRef, state } = useDragNDrop();
     const {

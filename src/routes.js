@@ -31,6 +31,10 @@ export const loginedRoutes = [
         element: <Level name='appearing' />,
     },
     {
+        path: '/level/path',
+        element: <Level name='path' />,
+    },
+    {
         path: '/rating',
         element: <Rating />,
     },

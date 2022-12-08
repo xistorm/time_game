@@ -8,6 +8,10 @@
         "appearing": {
             "status": "lock",
             "rating": 0
+        },
+        "path": {
+            "status": "lock",
+            "rating": 0
         }
     }
 }

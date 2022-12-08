@@ -1,4 +1,4 @@
-import { Drawing, LevelHeader, Timer } from '../../../components';
+import { LevelHeader, LevelObject } from '../../../components';
 import { useLevel } from '../../../hooks';
 
 
@@ -24,31 +24,13 @@ export const AppearingLevel = (levelData) => {
     return (
         <div className={styles.wrapper}>
             <LevelHeader rating={rating} remaining={remaining} />
-            {timerData && drawingData && <div
-                className={styles.object}
+            {timerData && drawingData && <LevelObject
+                id={`level_object_${remaining}`}
+                style={{ opacity: `${ratio}` }}
                 onClick={handleClick}
-                style={{
-                    width: `${drawingData.size}px`,
-                    height: `${drawingData.size}px`,
-                    top: `${drawingData.y}px`,
-                    left: `${drawingData.x}px`,
-                    opacity: `${ratio}`,
-                }}
-            >
-                <Timer
-                    id={`timer_${remaining}`}
-                    className={styles.timer}
-                    {...timerData}
-                    onTick={updateRatio}
-                    onEnding={updateData}
-                />
-                <Drawing
-                    id={`drawing_${remaining}`}
-                    className={styles.drawing}
-                    size={drawingData.size}
-                    vertexesAmount={drawingData.vertexesAmount}
-                />
-            </div>}
+                drawingData={{ ...drawingData }}
+                timerData={{ ...timerData, onEnding: updateData, onTick: updateRatio }}
+            />}
             {Modal}
         </div >
     )
