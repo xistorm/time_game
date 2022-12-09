@@ -1,15 +1,14 @@
-import composeRefs from '@seznam/compose-react-refs';
 import { Timer, Drawing } from '..';
 
 
 import styles from './levelObject.module.sass';
 
-export const LevelObject = ({ objectRef, id, drawingData, timerData, color, style, ...props }) => {
+export const LevelObject = ({ id, drawingData, timerData, style, ...props }) => {
     return (
         <div
             key={id}
             className={styles.object}
-            ref={composeRefs(drawingData.dragNDropRef, objectRef)}
+            ref={drawingData.dragNDropRef}
             style={{
                 width: `${drawingData.size}px`,
                 height: `${drawingData.size}px`,
@@ -29,13 +28,9 @@ export const LevelObject = ({ objectRef, id, drawingData, timerData, color, styl
             <Drawing
                 id={`drawing_${timerData.remaining}`}
                 className={styles.drawing}
-                type='nAngle'
+                type={drawingData.type}
                 size={drawingData.size}
-                data={{
-                    angles: drawingData.vertexesAmount,
-                    len: drawingData.size.x / 2,
-                    color,
-                }}
+                data={drawingData.data}
             />
         </div>
     );

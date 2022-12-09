@@ -5,6 +5,10 @@ import { useLevel } from '../../../hooks';
 import styles from './appearingLevel.module.sass';
 
 
+const ALLOWEDED_FIGURE_TYPES = [
+    'nAngle',
+];
+
 export const AppearingLevel = (levelData) => {
     const {
         ratio,
@@ -18,7 +22,8 @@ export const AppearingLevel = (levelData) => {
     } = useLevel(levelData);
 
     const handleClick = () => {
-        updateData(true);
+        const addRating = ALLOWEDED_FIGURE_TYPES.includes(drawingData.type);
+        updateData(addRating);
     }
 
     return (

@@ -9,6 +9,7 @@ import styles from './drawing.module.sass';
 const drawingTypeToDrawingFunction = {
     nAngle: DrawerService.fillNAngleFigure,
     curve: DrawerService.drawCurve,
+    circle: DrawerService.fillCircle,
 }
 
 const DrawingComponent = ({ size, id, type, data, ...props }) => {

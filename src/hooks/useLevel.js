@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import { randomRange, updateWindow } from '../utils';
+import { randomArrayItem, randomRange, updateWindow } from '../utils';
 import { GameService, AuthService } from '../services';
 import { AuthContext } from "../context";
 import { useModal } from "./useModal";
@@ -9,6 +9,10 @@ import { useModal } from "./useModal";
 
 const START_RATIO = 0.1;
 const RATING_PER_OBJECT = 200;
+const TYPES = [
+    'nAngle',
+    'circle',
+]
 
 export const generateTimerData = (timerTime) => {
     const newTimerData = {
@@ -19,15 +23,33 @@ export const generateTimerData = (timerTime) => {
     return newTimerData;
 }
 
-export const generateDrawingData = (figureSize, vertexesAmount) => {
+export const generateDrawingData = (figureSize, vertexesAmountRange) => {
     const size = randomRange(figureSize.min, figureSize.max);
+    const type = randomArrayItem(TYPES);
+    const vertexesAmount = randomRange(vertexesAmountRange.min, vertexesAmountRange.max);
+
+    const data = (() => {
+        switch (type) {
+            case 'nAngle': return {
+                angles: vertexesAmount,
+                len: size / 2,
+            };
+            case 'circle': return {
+                radius: size / 2,
+            };
+            default: return;
+        };
+    })();
+
     const newDrawingData = {
         start: {
             x: randomRange(figureSize.max, window.innerWidth - figureSize.max),
             y: randomRange(figureSize.max, window.innerHeight - figureSize.max),
         },
         size: { x: size, y: size },
-        vertexesAmount: randomRange(vertexesAmount.min, vertexesAmount.max),
+        vertexesAmount,
+        type,
+        data,
     };
 
     return newDrawingData;

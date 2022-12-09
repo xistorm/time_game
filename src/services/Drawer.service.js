@@ -64,9 +64,16 @@ export class DrawerService {
             const [toX, toY] = vertexes[i];
             ctx.lineTo(toX, toY);
         }
-        ctx.lineWidth = 5;
         ctx.fillStyle = color;
         ctx.fill();
+        ctx.closePath();
+    }
+
+    static fillCircle = (ctx, { radius, color = this.getRandomColor() }) => {
+        ctx.beginPath();
+        ctx.arc(radius, radius, radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = color;
+        ctx.fill()
         ctx.closePath();
     }
 
