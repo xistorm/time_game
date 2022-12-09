@@ -1,4 +1,4 @@
-import { useEffect, createRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 
 export const EDragNDropStatus = {
@@ -6,58 +6,62 @@ export const EDragNDropStatus = {
     ACTIVE: 'active',
 }
 
-export const useDragNDrop = (onDrop,) => {
-    const ref = createRef();
-
+export const useDragNDrop = (onDrop, onMove) => {
+    const offset = useRef();
+    const [node, setNode] = useState();
     const [coordinates, setCoordinates] = useState({});
     const [state, setState] = useState(EDragNDropStatus.INACTIVE);
 
     useEffect(() => {
-        const { current } = ref;
-        if (!current) return;
+        if (!node) return;
 
-        current.addEventListener('mousedown', handleDrag);
+        node.addEventListener('mousedown', handleDrag);
         return () => {
-            current.removeEventListener('mousedown', handleDrag);
+            node.removeEventListener('mousedown', handleDrag);
         };
-    }, [ref]);
+    }, [node]);
 
     useEffect(() => {
-        const { current } = ref;
-        if (!current) return;
+        if (!node) return;
 
-        ref.current.style.left = `${coordinates.x}px`;
-        ref.current.style.top = `${coordinates.y}px`;
+        node.style.left = `${coordinates.x}px`;
+        node.style.top = `${coordinates.y}px`;
     }, [coordinates.x, coordinates.y]);
 
-    const handleMouseMove = (offset) => (e) => {
+    const dragNDropRef = (node) => {
+        setNode(node);
+    }
+
+    const handleMouseMove = useCallback((e) => {
+        onMove && onMove();
         setCoordinates({
-            x: e.clientX - offset.x,
-            y: e.clientY - offset.y,
+            x: e.clientX - offset.current.x,
+            y: e.clientY - offset.current.y,
         });
-    };
+    }, [onMove]);
 
     const handleDrag = (e) => {
-        const { current } = ref;
-        const offset = {
-            x: e.clientX - current.offsetLeft,
-            y: e.clientY - current.offsetTop,
+        offset.current = {
+            x: e.clientX - node.offsetLeft,
+            y: e.clientY - node.offsetTop,
         };
-        const handler = handleMouseMove(offset);
 
         setState(EDragNDropStatus.ACTIVE);
-        document.addEventListener('mousemove', handler);
-        document.addEventListener('mouseup', () => handleDrop(handler));
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleDrop);
     };
 
-    const handleDrop = (handler) => {
+    const handleDrop = () => {
         onDrop && onDrop();
         setState(EDragNDropStatus.INACTIVE);
-        document.removeEventListener('mousemove', handler);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleDrop);
     };
 
     return {
-        dragNDropRef: ref,
+        dragNDropRef,
+        handleDrop,
+        node,
         state,
     }
 }

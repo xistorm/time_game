@@ -9,7 +9,7 @@ import styles from './movingLevel.module.sass';
 
 export const MovingLevel = (levelData) => {
     const canRef = useRef();
-    const { dragNDropRef, state } = useDragNDrop();
+    const { dragNDropRef, node, state } = useDragNDrop();
     const {
         rating,
         remaining,
@@ -28,7 +28,7 @@ export const MovingLevel = (levelData) => {
 
     const figureInCan = () => {
         const canPos = canRef.current?.getBoundingClientRect();
-        const elPos = dragNDropRef.current?.getBoundingClientRect();
+        const elPos = node?.getBoundingClientRect();
 
         if (!canPos || !elPos) return false;
 

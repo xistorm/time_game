@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import { cancelAction, randomRange, updateWindow } from '../utils';
+import { randomRange, updateWindow } from '../utils';
 import { GameService, AuthService } from '../services';
 import { AuthContext } from "../context";
 import { useModal } from "./useModal";
@@ -20,10 +20,13 @@ export const generateTimerData = (timerTime) => {
 }
 
 export const generateDrawingData = (figureSize, vertexesAmount) => {
+    const size = randomRange(figureSize.min, figureSize.max);
     const newDrawingData = {
-        x: randomRange(figureSize.max, window.innerWidth - figureSize.max),
-        y: randomRange(figureSize.max, window.innerHeight - figureSize.max),
-        size: randomRange(figureSize.min, figureSize.max),
+        start: {
+            x: randomRange(figureSize.max, window.innerWidth - figureSize.max),
+            y: randomRange(figureSize.max, window.innerHeight - figureSize.max),
+        },
+        size: { x: size, y: size },
         vertexesAmount: randomRange(vertexesAmount.min, vertexesAmount.max),
     };
 

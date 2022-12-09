@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import { useCanvas } from '../../hooks';
 import { DrawerService } from '../../services';
@@ -6,13 +6,19 @@ import { DrawerService } from '../../services';
 
 import styles from './drawing.module.sass';
 
-export const Drawing = ({ size, id, vertexesAmount, ...props }) => {
+const drawingTypeToDrawingFunction = {
+    nAngle: DrawerService.fillNAngleFigure,
+    curve: DrawerService.drawCurve,
+}
+
+const DrawingComponent = ({ size, id, type, data, ...props }) => {
     const { canvasRef, canvasCtx } = useCanvas();
 
     useEffect(() => {
         if (!canvasCtx) return;
+        const drawingFunction = drawingTypeToDrawingFunction[type];
+        drawingFunction(canvasCtx, data);
 
-        DrawerService.fillNAngleFigure(canvasCtx, vertexesAmount, size / 2);
         return () => {
             DrawerService.clearCanvas(canvasCtx, size);
         }
@@ -22,9 +28,11 @@ export const Drawing = ({ size, id, vertexesAmount, ...props }) => {
         <canvas
             className={styles.canvas}
             ref={canvasRef}
-            width={`${size}px`}
-            height={`${size}px`}
+            width={`${size.x}px`}
+            height={`${size.y}px`}
             {...props}
         ></canvas>
     );
 }
+
+export const Drawing = memo(DrawingComponent)
