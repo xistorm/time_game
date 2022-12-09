@@ -10,23 +10,12 @@ export const Timer = ({
     delay,
     onEnding,
     onTick,
+    pause,
     className,
     ...props
 }) => {
     const [time, setTime] = useState(startTime);
-    const [timeInterval, setTimeInterval] = useState();
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            onTick && onTick();
-            setTime(val => val - 1);
-        }, delay);
-        setTimeInterval(interval);
-
-        return () => {
-            clearInterval(interval);
-        }
-    }, [delay, id]);
+    const [timeoutId, setTimeoutId] = useState();
 
     useEffect(() => {
         setTime(startTime);
@@ -35,9 +24,19 @@ export const Timer = ({
     useEffect(() => {
         if (time === 0) {
             onEnding();
-            clearInterval(timeInterval);
+            clearTimeout(timeoutId);
+            return;
         }
-    }, [time]);
+        const newTimeoutId = setTimeout(() => {
+            !pause && onTick && onTick();
+            !pause && setTime(val => val - 1);
+        }, delay);
+        setTimeoutId(newTimeoutId);
+
+        return () => {
+            clearTimeout(newTimeoutId);
+        }
+    }, [time, pause]);
 
     return (
         <p className={classNames(className, styles.time)} {...props}>{time}</p>

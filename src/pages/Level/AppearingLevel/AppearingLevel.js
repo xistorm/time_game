@@ -22,19 +22,24 @@ export const AppearingLevel = (levelData) => {
     } = useLevel(levelData);
 
     const handleClick = () => {
-        const addRating = ALLOWEDED_FIGURE_TYPES.includes(drawingData.type);
-        updateData(addRating);
+        const allowedType = ALLOWEDED_FIGURE_TYPES.includes(drawingData.type);
+        updateData({ addRating: allowedType, addIndex: allowedType });
+    }
+
+    const handleTimerEnd = () => {
+        const allowedType = ALLOWEDED_FIGURE_TYPES.includes(drawingData.type);
+        updateData({ addIndex: allowedType });
     }
 
     return (
         <div className={styles.wrapper}>
             <LevelHeader rating={rating} remaining={remaining} />
             {timerData && drawingData && <LevelObject
-                id={`level_object_${remaining}`}
+                id={`level_object_${drawingData.start.x}_${drawingData.start.y}`}
                 style={{ opacity: `${ratio}` }}
                 onClick={handleClick}
                 drawingData={{ ...drawingData }}
-                timerData={{ ...timerData, onEnding: updateData, onTick: updateRatio }}
+                timerData={{ ...timerData, onEnding: handleTimerEnd, onTick: updateRatio }}
             />}
             {Modal}
         </div >

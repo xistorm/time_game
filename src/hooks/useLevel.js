@@ -14,10 +14,11 @@ const TYPES = [
     'circle',
 ]
 
-export const generateTimerData = (timerTime) => {
+export const generateTimerData = (timerTime, pause = false) => {
     const newTimerData = {
         startTime: randomRange(timerTime.min, timerTime.max),
-        delay: 1000
+        delay: 1000,
+        pause,
     };
 
     return newTimerData;
@@ -62,7 +63,8 @@ export const useLevel = ({
     figureSize,
     vertexesAmount,
     timerTime,
-    started
+    started,
+    pause,
 }) => {
     const handleResults = () => {
         navigate('/level');
@@ -97,6 +99,10 @@ export const useLevel = ({
     }, [started]);
 
     useEffect(() => {
+        setTimerData(prev => ({ ...prev, pause }));
+    }, [pause]);
+
+    useEffect(() => {
         if (currentIndex === objectsAmount) {
             const userWithUnlockedLevel = unlockingLevelName ?
                 GameService.unlockLevel(user, unlockingLevelName) :
@@ -108,14 +114,14 @@ export const useLevel = ({
         }
     }, [currentIndex]);
 
-    const updateData = (addRating = false) => {
+    const updateData = ({ addRating = false, addIndex = true } = {}) => {
         if (currentIndex === objectsAmount) return;
-        const newTimerData = generateTimerData(timerTime);
+        const newTimerData = generateTimerData(timerTime, pause);
         const newDrawingData = generateDrawingData(figureSize, vertexesAmount);
 
         setTimerData({ ...newTimerData });
         setDrawingData({ ...newDrawingData });
-        setCurrentIndex((val) => val += 1);
+        addIndex && setCurrentIndex((val) => val += 1);
         addRating && setRating((val) => val += Math.floor(ratio * RATING_PER_OBJECT));
         setRatio(START_RATIO);
     }

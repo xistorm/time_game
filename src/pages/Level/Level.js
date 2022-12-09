@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../hooks";
 import { GameService } from "../../services";
 import { AppearingLevel } from "./AppearingLevel/AppearingLevel";
@@ -16,23 +17,58 @@ export const Level = ({ name }) => {
     const ExactLevel = levelNameToLevelMap[name];
     const levelData = GameService.getLevelData(name);
 
-    const handleModalClose = () => {
+    const navigate = useNavigate();
+
+    const handleStartModalClose = () => {
         setStarted(true);
     }
 
-    const [started, setStarted] = useState(false)
-    const { Modal } = useModal({
+    const handlePauseModalClose = () => {
+        setPause(false);
+    }
+
+    const handleGoToMenu = () => {
+        navigate('/level');
+    }
+
+    const [pause, setPause] = useState(false);
+    const [started, setStarted] = useState(false);
+    const startModal = useModal({
         title: `Уровень ${levelData.title}`,
         description: levelData.description,
         closeText: 'Начать',
         opened: true,
-        onClose: handleModalClose,
+        onClose: handleStartModalClose,
     });
+    const pauseModal = useModal({
+        title: `Пауза`,
+        description: 'Вы можете продолжить или начать заново',
+        closeText: 'Продолжить',
+        additionalAction: {
+            text: 'Меню',
+            onClick: handleGoToMenu,
+        },
+        onClose: handlePauseModalClose,
+    });
+
+    const handlePause = useCallback((e) => {
+        if (e.key !== 'Escape' || !started) return;
+
+        setPause(true);
+        pauseModal.openModal();
+        document.removeEventListener('keydown', handlePause);
+    }, [pauseModal, started]);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handlePause);
+        return () => document.removeEventListener('keydown', handlePause);
+    }, [pause, handlePause])
 
     return (
         <>
-            <ExactLevel started={started} {...levelData} />
-            {Modal}
+            <ExactLevel pause={pause} started={started} {...levelData} />
+            {startModal.Modal}
+            {pauseModal.Modal}
         </>
     )
 }

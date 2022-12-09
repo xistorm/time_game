@@ -42,7 +42,7 @@ export const PathLevel = (levelData) => {
 
     useEffect(() => {
         if (state === EDragNDropStatus.INACTIVE) {
-            figureInCan() && updateData(true);
+            figureInCan() && updateData({ addRating: true });
         } else {
             const interval = setInterval(() => {
                 if (!figureOnPath()) {

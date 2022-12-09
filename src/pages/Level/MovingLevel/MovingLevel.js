@@ -22,7 +22,7 @@ export const MovingLevel = (levelData) => {
 
     useEffect(() => {
         if (state === EDragNDropStatus.INACTIVE && figureInCan()) {
-            updateData(true);
+            updateData({ addRating: true });
         }
     }, [state]);
 
