@@ -18,6 +18,7 @@ export const useDragNDrop = (onDrop, onMove) => {
         node.addEventListener('mousedown', handleDrag);
         return () => {
             node.removeEventListener('mousedown', handleDrag);
+            handleDrop();
         };
     }, [node]);
 
